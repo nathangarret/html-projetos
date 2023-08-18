@@ -1,3 +1,39 @@
+<?php
+
+$Bco = "localhost";
+$Usuario = "root";
+$Senha = "root";
+$bd = "medical_design";
+
+try 
+{
+    $conexao = new PDO("mysql:host=localhost; dbname=$Bco", "$Usuario", "$Senha");
+    $conexao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);   
+    $conexao->exec("set names utf8");    
+}
+catch (PDOException $erro)
+{
+    echo "Erro na conexão" . $erro->getMessage();
+    
+}
+
+if (isset($_POST['submit'])) {
+    $name = mysqli_real_escape_string($conn, $_POST["name"]);
+    $email = mysqli_real_escape_string($conn, $_POST["email"]);
+    $number = $_POST["number"];
+    $date = $_POST["date"];
+
+    $insert = mysqli_query($conn, "INSERT INTO 'contact_form' (name, email, date) 
+    VALUES ('$name', '$email', '$number', '$date')") or die("conection failed");
+
+    if ($insert) {
+        $message[] = "Appointment made successfully";
+    } else {
+        $message[] = "Appointment failed";
+    }
+}
+
+?>
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -247,14 +283,21 @@
             <div class="image">
                 <img src="img/professor.png" alt="">
             </div>
-                            
-            <form action="#" method="POST">
+
+            <form action="<?php $_SERVER["PHP_SELF"]; ?>" method="POST">
+                <?php
+                if (isset($message)) {
+                    foreach ($message as $message) {
+                        echo '<p class="message">' . $message . '</p>';
+                    }
+                }
+                ?>
                 <h3>Book Appointment</h3>
                 <input type="text" placeholder="Your Name" class="box" id="name">
                 <input type="number" placeholder="Your Number" class="box" id="email">
                 <input type="email" placeholder="Your Email" class="box" id="number"> 
                 <input type="date" class="box" id="date">
-                <input type="submit" value="Book Now" class="btn" id="button">
+                <input type="submit" value="Book Now" class="btn" id="">
             </form>
         </div>
     </section>
@@ -429,4 +472,5 @@
 
     <script src="js/javascript.js"></script>
 </body>
+
 </html>

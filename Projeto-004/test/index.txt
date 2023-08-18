@@ -1,0 +1,62 @@
+<?php
+	if(isset($_REQUEST['valor']) and ($_REQUEST['valor'] == 'enviado')) 
+	{ 
+		$Botao = $_POST["btn"];
+		$Nome = $_POST["nome"];
+		$Email = $_POST["email"];
+		$Number = $_POST["number"];
+        $Date = $_POST["date"];
+		
+		include "conexao.php";
+		if ($Botao == "Book Now")
+		{ 
+			try
+ 			{
+    			$Comando=$conexao->prepare("INSERT INTO contact_form (NOME_, EMAIL_, NUMBER_, DATE_) VALUES ( ?, ?, ?, ?)");
+            
+           		$Comando->bindParam(1, $Nome);
+           		$Comando->bindParam(2, $Email);
+  	    		$Comando->bindParam(3, $Number);
+             	$Comando->bindParam(4, $Date);
+                        
+    				if ($Comando->execute())
+    				{
+        				if ($Comando->rowCount () >0) 
+        				{
+         					//echo "<script> alert('Cadastro Realizado com Sucesso!')</script>"; 
+                                  
+            			        $Nome = null; 
+ 							    $Email = null;
+ 							    $Number = null;
+ 							    $Date = null;
+ 							
+ 				          //header('location:LoginAdm.php'); 
+                  //echo "<A href=\"LoginAdm.php\">Cadastrado</A>";							
+
+                            echo("<script>
+							        window.alert('Cadastro Realizado com sucesso, parabens!')
+							    </script>");
+              
+            		}
+            		else 
+            		{
+                	echo "Erro ao tentar efetivar o contato.";
+
+            		}
+        			}
+     				else 
+        			{ 
+           
+           				throw new PDOException("Erro: Não foi possivel executar a declaração sql.");
+            
+        			}
+        		}    
+    		catch (PDOException $erro)
+    		{
+        		echo"Erro" . $erro->getMessage();
+    		}
+			
+		}
+
+ 	} else {
+    ?>
