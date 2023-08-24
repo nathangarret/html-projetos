@@ -60,7 +60,7 @@ a:hover{
     width: 14ch;
     white-space: nowrap;
     overflow: hidden;
-    animation: typing 2.5s steps(20);
+    animation: typing 2.5s steps(40,end);
     justify-content: center;
 }
 
